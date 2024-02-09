@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USDT Price</title>
+</head>
+<body>
+  <div id="price"></div>
+
+  <script>
+    function fetchPrice() {
+      var url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';
+      var headers = {
+        'Content-Type': 'application/json',
+        'Cookie': 'cid=rujCuvlC'
+      };
+      var payload = {
+        'page': 1,
+        'rows': 1,
+        'asset': 'USDT',
+        'tradeType': 'SELL',
+        'fiat': 'VND',
+        'merchantCheck': false
+      };
+
+      var options = {
+        'method': 'POST',
+        'headers': headers,
+        'body': JSON.stringify(payload)
+      };
+
+      fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+          var price = data.data[0].adv.price;
+          document.getElementById('price').innerText = price;
+        })
+        .catch(error => console.error('Error fetching price:', error));
+    }
+
+    // Call fetchPrice function when the page loads
+    fetchPrice();
+  </script>
+</body>
+</html>
